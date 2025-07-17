@@ -1,9 +1,21 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Zap, Sparkles, Rocket } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const HeroSection = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -22,128 +34,149 @@ const HeroSection = () => {
       opacity: 1,
       transition: {
         duration: 0.8,
-        ease: "easeOut"
+        ease: [0.645, 0.045, 0.355, 1]
       }
     }
   };
 
   return (
-    <section id="home" className="min-h-screen relative overflow-hidden gradient-orange">
-      {/* Abstract Background Elements */}
+    <section id="home" className="min-h-screen relative overflow-hidden gradient-modern">
+      {/* Animated background particles */}
       <div className="absolute inset-0">
-        {/* Floating circles */}
+        {/* Floating geometric shapes */}
         <motion.div
-          className="absolute top-20 right-20 w-20 h-20 bg-yellow-400 rounded-full"
-          animate={{
-            y: [0, -20, 0],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
+          className="absolute top-20 right-20 w-32 h-32 rounded-full bg-gradient-to-br from-modern-purple to-modern-cyan opacity-20 animate-float"
+          style={{
+            transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
           }}
         />
         <motion.div
-          className="absolute top-1/2 right-40 w-32 h-32 bg-orange-300 rounded-full opacity-70"
-          animate={{
-            y: [0, 20, 0],
-            x: [0, -10, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut"
+          className="absolute top-1/2 right-1/3 w-20 h-20 rounded-lg bg-gradient-to-br from-modern-pink to-modern-orange opacity-30 animate-float-reverse"
+          style={{
+            transform: `translate(${mousePosition.x * 0.03}px, ${mousePosition.y * 0.03}px)`
           }}
         />
         <motion.div
-          className="absolute bottom-20 left-20 w-16 h-16 bg-red-400 rounded-full"
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, -180, -360],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut"
+          className="absolute bottom-32 left-20 w-24 h-24 rounded-full bg-gradient-to-br from-modern-cyan to-modern-blue opacity-25 animate-float"
+          style={{
+            transform: `translate(${mousePosition.x * 0.025}px, ${mousePosition.y * 0.025}px)`
           }}
         />
 
-        {/* Squiggly lines */}
-        <motion.svg
-          className="absolute top-40 left-10 w-24 h-24"
-          viewBox="0 0 100 100"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 2, delay: 1 }}
-        >
-          <motion.path
-            d="M10,50 Q30,10 50,50 T90,50"
-            stroke="#ff6b47"
-            strokeWidth="3"
-            fill="transparent"
-            animate={{
-              d: [
-                "M10,50 Q30,10 50,50 T90,50",
-                "M10,50 Q30,90 50,50 T90,50",
-                "M10,50 Q30,10 50,50 T90,50"
-              ]
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-        </motion.svg>
-
-        <motion.div
-          className="absolute bottom-40 right-60 w-6 h-32 bg-pink-400 rounded-full transform rotate-45"
-          animate={{
-            rotate: [45, 135, 45],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 7,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
+        {/* Abstract 3D elements */}
+        <div className="absolute top-40 left-10 w-16 h-32 bg-gradient-to-b from-modern-purple to-transparent rounded-full transform rotate-45 animate-float opacity-30" />
+        <div className="absolute bottom-40 right-32 w-20 h-20 border-4 border-modern-cyan rounded-lg transform rotate-12 animate-float-reverse opacity-40" />
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-5" 
+             style={{
+               backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--modern-cyan)) 1px, transparent 0)`,
+               backgroundSize: '50px 50px'
+             }} 
         />
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 pt-32 pb-20 relative z-10">
+      <div className="container mx-auto px-6 pt-32 pb-20 relative z-10">
         <motion.div
           className="max-w-6xl mx-auto text-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
+          {/* Floating icons */}
+          <motion.div className="flex justify-center mb-8" variants={itemVariants}>
+            <div className="flex space-x-8">
+              <motion.div 
+                className="p-3 glass rounded-full animate-float"
+                whileHover={{ scale: 1.2, rotate: 360 }}
+                transition={{ duration: 0.5 }}
+                data-cursor-hover
+              >
+                <Zap className="w-6 h-6 text-modern-cyan" />
+              </motion.div>
+              <motion.div 
+                className="p-3 glass rounded-full animate-float-reverse"
+                whileHover={{ scale: 1.2, rotate: -360 }}
+                transition={{ duration: 0.5 }}
+                data-cursor-hover
+              >
+                <Sparkles className="w-6 h-6 text-modern-purple" />
+              </motion.div>
+              <motion.div 
+                className="p-3 glass rounded-full animate-float"
+                whileHover={{ scale: 1.2, rotate: 360 }}
+                transition={{ duration: 0.5 }}
+                data-cursor-hover
+              >
+                <Rocket className="w-6 h-6 text-modern-pink" />
+              </motion.div>
+            </div>
+          </motion.div>
+
           <motion.h1
-            className="text-4xl md:text-6xl lg:text-7xl font-black text-gray-900 leading-tight mb-6"
+            className="text-5xl md:text-7xl lg:text-8xl font-space font-black text-white leading-tight mb-8 animate-text-glow"
             variants={itemVariants}
           >
-            BUILD BUSINESS FASTER,
-            <br />
-            <span className="text-gray-800">WE ARE CREATIVE AGENCY</span>
+            <span className="block">FUTURE OF</span>
+            <span className="bg-gradient-to-r from-modern-cyan via-modern-purple to-modern-pink bg-clip-text text-transparent block">
+              DIGITAL CREATIVITY
+            </span>
           </motion.h1>
 
           <motion.p
-            className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-8 leading-relaxed"
+            className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed"
             variants={itemVariants}
           >
-            Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.
+            We craft immersive digital experiences that push boundaries, combining cutting-edge technology with stunning design to bring your vision to life.
           </motion.p>
 
           <motion.div
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
             variants={itemVariants}
           >
             <Button 
-              className="bg-agency-orange hover:bg-agency-orange-dark text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+              className="bg-gradient-to-r from-modern-purple to-modern-cyan text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-modern-purple/30 group card-3d"
+              data-cursor-hover
             >
-              GET STARTED
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              <span className="flex items-center">
+                START YOUR PROJECT
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-2" />
+              </span>
             </Button>
+            
+            <Button 
+              variant="outline"
+              className="border-2 border-modern-cyan text-modern-cyan hover:bg-modern-cyan hover:text-modern-dark px-8 py-4 rounded-full text-lg font-semibold transition-all duration-500 hover:scale-105 glass"
+              data-cursor-hover
+            >
+              VIEW OUR WORK
+            </Button>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20"
+            variants={itemVariants}
+          >
+            {[
+              { number: '500+', label: 'Projects Completed' },
+              { number: '99%', label: 'Client Satisfaction' },
+              { number: '50+', label: 'Team Members' },
+              { number: '24/7', label: 'Support Available' }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                className="text-center glass p-6 rounded-2xl card-3d"
+                whileHover={{ y: -10, scale: 1.05 }}
+                data-cursor-hover
+              >
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-modern-cyan to-modern-purple bg-clip-text text-transparent">
+                  {stat.number}
+                </div>
+                <div className="text-gray-400 mt-2">{stat.label}</div>
+              </motion.div>
+            ))}
           </motion.div>
         </motion.div>
       </div>
@@ -159,9 +192,20 @@ const HeroSection = () => {
           repeat: Infinity,
           ease: "easeInOut"
         }}
+        data-cursor-hover
       >
-        <div className="w-6 h-10 border-2 border-gray-800 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-gray-800 rounded-full mt-2"></div>
+        <div className="w-6 h-10 border-2 border-modern-cyan rounded-full flex justify-center glass">
+          <motion.div 
+            className="w-1 h-3 bg-modern-cyan rounded-full mt-2"
+            animate={{
+              y: [0, 10, 0],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
         </div>
       </motion.div>
     </section>
