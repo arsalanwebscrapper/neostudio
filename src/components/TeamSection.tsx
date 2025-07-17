@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -71,11 +72,11 @@ const TeamSection = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-orange-50 to-peach-50 relative overflow-hidden">
-      {/* Background Abstract Elements */}
+    <section className="py-20 gradient-modern relative overflow-hidden">
+      {/* Animated background particles */}
       <div className="absolute inset-0">
         <motion.div
-          className="absolute top-20 left-10 w-32 h-32 bg-orange-200 rounded-full opacity-30"
+          className="absolute top-20 left-10 w-32 h-32 rounded-full bg-gradient-to-br from-modern-orange to-modern-pink opacity-30 animate-float"
           animate={{
             scale: [1, 1.2, 1],
             rotate: [0, 180, 360],
@@ -87,20 +88,27 @@ const TeamSection = () => {
           }}
         />
         <motion.div
-          className="absolute bottom-20 right-20 w-24 h-24 bg-peach-300 rounded-full opacity-40"
+          className="absolute bottom-20 right-20 w-24 h-24 rounded-lg bg-gradient-to-br from-modern-cyan to-modern-blue opacity-40 animate-float-reverse"
           animate={{
             y: [0, -30, 0],
             x: [0, 20, 0],
           }}
           transition={{
             duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut"
+            repeat: Infinity
           }}
+        />
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-5" 
+             style={{
+               backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--modern-purple)) 1px, transparent 0)`,
+               backgroundSize: '50px 50px'
+             }} 
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -108,10 +116,10 @@ const TeamSection = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Our Best Mentors
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-space font-black text-white mb-6 animate-text-glow">
+            Our <span className="bg-gradient-to-r from-modern-cyan via-modern-purple to-modern-pink bg-clip-text text-transparent">Team</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
             Meet the creative minds behind our success. Our team of experts brings years of experience and innovation to every project.
           </p>
         </motion.div>
@@ -129,11 +137,12 @@ const TeamSection = () => {
               key={member.id}
               className="group cursor-pointer"
               variants={itemVariants}
-              whileHover={{ y: -10 }}
+              whileHover={{ y: -10, scale: 1.05 }}
+              data-cursor-hover
             >
               <div className="relative">
                 <motion.div
-                  className="w-full aspect-square rounded-full overflow-hidden bg-gradient-to-br from-orange-400 to-peach-400 p-1"
+                  className="w-full aspect-square rounded-full overflow-hidden bg-gradient-to-br from-modern-purple to-modern-cyan p-1 glass"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -144,12 +153,12 @@ const TeamSection = () => {
                   />
                 </motion.div>
                 <motion.div
-                  className="absolute inset-0 bg-black bg-opacity-60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute inset-0 bg-black bg-opacity-80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 glass"
                 >
                   <div className="text-center text-white p-4">
-                    <h3 className="font-bold text-lg mb-1">{member.name}</h3>
-                    <p className="text-sm mb-2">{member.role}</p>
-                    <p className="text-xs">{member.bio}</p>
+                    <h3 className="font-bold text-lg mb-1 bg-gradient-to-r from-modern-cyan to-modern-purple bg-clip-text text-transparent">{member.name}</h3>
+                    <p className="text-sm mb-2 text-modern-cyan">{member.role}</p>
+                    <p className="text-xs text-gray-300">{member.bio}</p>
                   </div>
                 </motion.div>
               </div>
@@ -169,7 +178,7 @@ const TeamSection = () => {
               transition={{ duration: 0.3 }}
             >
               <div className="w-64 h-64 mx-auto relative">
-                <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-orange-400 to-peach-400 p-1">
+                <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-modern-purple to-modern-cyan p-1 glass">
                   <img
                     src={teamMembers[currentIndex].image}
                     alt={teamMembers[currentIndex].name}
@@ -178,13 +187,13 @@ const TeamSection = () => {
                 </div>
               </div>
               <div className="text-center mt-6">
-                <h3 className="font-bold text-xl text-gray-900 mb-2">
+                <h3 className="font-bold text-xl text-white mb-2 bg-gradient-to-r from-modern-cyan to-modern-purple bg-clip-text text-transparent">
                   {teamMembers[currentIndex].name}
                 </h3>
-                <p className="text-agency-orange font-semibold mb-3">
+                <p className="text-modern-cyan font-semibold mb-3">
                   {teamMembers[currentIndex].role}
                 </p>
-                <p className="text-gray-600">
+                <p className="text-gray-300">
                   {teamMembers[currentIndex].bio}
                 </p>
               </div>
@@ -193,20 +202,22 @@ const TeamSection = () => {
             {/* Navigation Arrows */}
             <motion.button
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-3 shadow-lg hover:bg-opacity-100 transition-all"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 glass rounded-full p-3 hover:bg-modern-purple/20 transition-all"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              data-cursor-hover
             >
-              <ChevronLeft className="w-6 h-6 text-gray-700" />
+              <ChevronLeft className="w-6 h-6 text-modern-cyan" />
             </motion.button>
 
             <motion.button
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-3 shadow-lg hover:bg-opacity-100 transition-all"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 glass rounded-full p-3 hover:bg-modern-purple/20 transition-all"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              data-cursor-hover
             >
-              <ChevronRight className="w-6 h-6 text-gray-700" />
+              <ChevronRight className="w-6 h-6 text-modern-cyan" />
             </motion.button>
           </div>
 
@@ -218,9 +229,10 @@ const TeamSection = () => {
                 onClick={() => setCurrentIndex(index)}
                 className={`w-3 h-3 rounded-full transition-all ${
                   index === currentIndex
-                    ? 'bg-agency-orange'
-                    : 'bg-gray-300 hover:bg-gray-400'
+                    ? 'bg-modern-cyan'
+                    : 'bg-gray-500 hover:bg-gray-400'
                 }`}
+                data-cursor-hover
               />
             ))}
           </div>

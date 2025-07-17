@@ -1,74 +1,73 @@
 
 import { motion } from 'framer-motion';
-import { 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin, 
-  Mail, 
-  Phone, 
-  MapPin,
-  ArrowUp
-} from 'lucide-react';
+import { Sparkles, Facebook, Twitter, Instagram, Linkedin, Github, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const quickLinks = [
+    { label: 'Home', href: '#home' },
+    { label: 'About', href: '#about' },
+    { label: 'Services', href: '#services' },
+    { label: 'Portfolio', href: '#portfolio' },
+    { label: 'Contact', href: '#contact' }
+  ];
+
+  const services = [
+    'Web Development',
+    'Mobile Apps',
+    'Brand Design',
+    'Digital Marketing',
+    'SEO Optimization',
+    'Consulting'
+  ];
 
   const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
     { icon: Twitter, href: '#', label: 'Twitter' },
     { icon: Instagram, href: '#', label: 'Instagram' },
     { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  ];
-
-  const quickLinks = [
-    { label: 'About Us', href: '#about' },
-    { label: 'Services', href: '#services' },
-    { label: 'Portfolio', href: '#portfolio' },
-    { label: 'Contact', href: '#contact' },
-  ];
-
-  const services = [
-    { label: 'Brand Design', href: '#' },
-    { label: 'Web Development', href: '#' },
-    { label: 'Digital Marketing', href: '#' },
-    { label: 'SEO Optimization', href: '#' },
+    { icon: Github, href: '#', label: 'GitHub' }
   ];
 
   return (
-    <footer className="bg-gray-900 text-white relative overflow-hidden">
-      {/* Background Abstract Elements */}
-      <div className="absolute inset-0 opacity-10">
+    <footer className="gradient-modern relative overflow-hidden">
+      {/* Animated background particles */}
+      <div className="absolute inset-0">
         <motion.div
-          className="absolute top-20 right-20 w-32 h-32 bg-gradient-to-br from-orange-400 to-peach-400 rounded-full"
+          className="absolute top-20 left-20 w-40 h-40 rounded-full bg-gradient-to-br from-modern-purple to-modern-cyan opacity-10 animate-float"
           animate={{
-            scale: [1, 1.2, 1],
+            scale: [1, 1.3, 1],
             rotate: [0, 360],
           }}
           transition={{
-            duration: 20,
+            duration: 25,
             repeat: Infinity,
             ease: "linear"
           }}
         />
         <motion.div
-          className="absolute bottom-20 left-20 w-24 h-24 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full"
+          className="absolute bottom-32 right-16 w-32 h-32 rounded-lg bg-gradient-to-br from-modern-pink to-modern-orange opacity-15 animate-float-reverse"
           animate={{
-            y: [0, -20, 0],
-            x: [0, 20, 0],
+            y: [0, -30, 0],
+            rotate: [0, -180, 0],
           }}
           transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut"
+            duration: 20,
+            repeat: Infinity
           }}
+        />
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-3" 
+             style={{
+               backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--modern-cyan)) 1px, transparent 0)`,
+               backgroundSize: '60px 60px'
+             }} 
         />
       </div>
 
-      <div className="container mx-auto px-4 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto px-6 pt-20 pb-8 relative z-10">
+        {/* Main Footer Content */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Company Info */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -76,27 +75,31 @@ const Footer = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-2xl font-bold mb-6 text-white">
-              CreativeStudio
-            </h3>
+            <motion.div
+              className="flex items-center space-x-2 font-space font-bold text-2xl text-white mb-6"
+              whileHover={{ scale: 1.05 }}
+            >
+              <Sparkles className="w-8 h-8 text-modern-cyan" />
+              <span className="bg-gradient-to-r from-modern-cyan to-modern-purple bg-clip-text text-transparent">
+                NeoStudio
+              </span>
+            </motion.div>
             <p className="text-gray-300 mb-6 leading-relaxed">
-              We are a creative digital agency that helps businesses build stronger connections with their audiences through innovative design and strategic thinking.
+              Transforming ideas into extraordinary digital experiences. We're your partners in creating the future of digital innovation.
             </p>
-            <div className="flex space-x-4">
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-agency-orange transition-colors duration-300 group"
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  whileTap={{ scale: 0.9 }}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <social.icon className="w-5 h-5 text-gray-300 group-hover:text-white" />
-                </motion.a>
-              ))}
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3 text-gray-300">
+                <Mail className="w-5 h-5 text-modern-cyan" />
+                <span>hello@neostudio.com</span>
+              </div>
+              <div className="flex items-center space-x-3 text-gray-300">
+                <Phone className="w-5 h-5 text-modern-cyan" />
+                <span>+1 (555) 123-4567</span>
+              </div>
+              <div className="flex items-center space-x-3 text-gray-300">
+                <MapPin className="w-5 h-5 text-modern-cyan" />
+                <span>123 Digital Street, Tech City</span>
+              </div>
             </div>
           </motion.div>
 
@@ -107,23 +110,17 @@ const Footer = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-lg font-semibold mb-6 text-white">
-              Quick Links
-            </h4>
+            <h3 className="text-xl font-bold text-white mb-6">Quick Links</h3>
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
-                <motion.li
-                  key={link.label}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
+                <motion.li key={index} whileHover={{ x: 5 }}>
                   <a
                     href={link.href}
-                    className="text-gray-300 hover:text-agency-orange transition-colors duration-200 flex items-center group"
+                    className="text-gray-300 hover:text-modern-cyan transition-colors duration-300 relative group"
+                    data-cursor-hover
                   >
-                    <span className="w-0 h-0.5 bg-agency-orange group-hover:w-4 transition-all duration-300 mr-0 group-hover:mr-2"></span>
                     {link.label}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-modern-cyan group-hover:w-full transition-all duration-300"></span>
                   </a>
                 </motion.li>
               ))}
@@ -137,108 +134,78 @@ const Footer = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-lg font-semibold mb-6 text-white">
-              Our Services
-            </h4>
+            <h3 className="text-xl font-bold text-white mb-6">Services</h3>
             <ul className="space-y-3">
               {services.map((service, index) => (
-                <motion.li
-                  key={service.label}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <a
-                    href={service.href}
-                    className="text-gray-300 hover:text-agency-orange transition-colors duration-200 flex items-center group"
-                  >
-                    <span className="w-0 h-0.5 bg-agency-orange group-hover:w-4 transition-all duration-300 mr-0 group-hover:mr-2"></span>
-                    {service.label}
-                  </a>
+                <motion.li key={index} whileHover={{ x: 5 }}>
+                  <span className="text-gray-300 hover:text-modern-purple transition-colors duration-300 cursor-pointer">
+                    {service}
+                  </span>
                 </motion.li>
               ))}
             </ul>
           </motion.div>
 
-          {/* Contact Info */}
+          {/* Newsletter */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <h4 className="text-lg font-semibold mb-6 text-white">
-              Contact Info
-            </h4>
+            <h3 className="text-xl font-bold text-white mb-6">Stay Updated</h3>
+            <p className="text-gray-300 mb-6">
+              Subscribe to our newsletter for the latest updates and insights.
+            </p>
             <div className="space-y-4">
-              <motion.div
-                className="flex items-start space-x-3 group"
-                whileHover={{ x: 5 }}
+              <input
+                type="email"
+                placeholder="Your email address"
+                className="w-full px-4 py-3 bg-black/20 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-modern-cyan transition-colors"
+              />
+              <motion.button
+                className="w-full bg-gradient-to-r from-modern-purple to-modern-cyan text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 card-3d"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                data-cursor-hover
               >
-                <Mail className="w-5 h-5 text-agency-orange mt-1 group-hover:scale-110 transition-transform" />
-                <div>
-                  <p className="text-gray-300">hello@creativestudio.com</p>
-                </div>
-              </motion.div>
-              
-              <motion.div
-                className="flex items-start space-x-3 group"
-                whileHover={{ x: 5 }}
-              >
-                <Phone className="w-5 h-5 text-agency-orange mt-1 group-hover:scale-110 transition-transform" />
-                <div>
-                  <p className="text-gray-300">+1 (555) 123-4567</p>
-                </div>
-              </motion.div>
-              
-              <motion.div
-                className="flex items-start space-x-3 group"
-                whileHover={{ x: 5 }}
-              >
-                <MapPin className="w-5 h-5 text-agency-orange mt-1 group-hover:scale-110 transition-transform" />
-                <div>
-                  <p className="text-gray-300">123 Creative St<br />Design City, DC 12345</p>
-                </div>
-              </motion.div>
+                Subscribe
+              </motion.button>
             </div>
           </motion.div>
         </div>
 
-        {/* Bottom Section */}
+        {/* Bottom Footer */}
         <motion.div
-          className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="border-t border-white/10 pt-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <div className="text-gray-400 text-sm mb-4 md:mb-0">
-            © 2024 CreativeStudio. All rights reserved. Built with ❤️ by our amazing team.
-          </div>
-          
-          <div className="flex space-x-6">
-            <a href="#" className="text-gray-400 hover:text-agency-orange text-sm transition-colors duration-200">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-gray-400 hover:text-agency-orange text-sm transition-colors duration-200">
-              Terms of Service
-            </a>
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-gray-400 text-center md:text-left">
+              © 2024 NeoStudio. All rights reserved. Crafted with ❤️ for the future.
+            </p>
+            
+            {/* Social Links */}
+            <div className="flex space-x-4">
+              {socialLinks.map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.href}
+                  className="w-10 h-10 glass rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-modern-purple/20 transition-all duration-300"
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  data-cursor-hover
+                >
+                  <social.icon className="w-5 h-5" />
+                </motion.a>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>
-
-      {/* Scroll to Top Button */}
-      <motion.button
-        onClick={scrollToTop}
-        className="fixed bottom-8 right-8 w-12 h-12 bg-agency-orange hover:bg-agency-orange-dark rounded-full flex items-center justify-center text-white shadow-lg z-50 transition-colors duration-300"
-        whileHover={{ scale: 1.1, y: -2 }}
-        whileTap={{ scale: 0.9 }}
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3, delay: 1 }}
-      >
-        <ArrowUp className="w-6 h-6" />
-      </motion.button>
     </footer>
   );
 };

@@ -1,35 +1,30 @@
 
 import { motion } from 'framer-motion';
-import { Award, Users, Target, Zap } from 'lucide-react';
+import { Check, Award, Users, Rocket, Target, Heart } from 'lucide-react';
 
 const AboutSection = () => {
   const stats = [
-    { number: '150+', label: 'Projects Completed', icon: Target },
-    { number: '50+', label: 'Happy Clients', icon: Users },
-    { number: '10+', label: 'Years Experience', icon: Award },
-    { number: '24/7', label: 'Support Available', icon: Zap },
+    { icon: Users, number: '500+', label: 'Happy Clients' },
+    { icon: Award, number: '50+', label: 'Awards Won' },
+    { icon: Rocket, number: '1000+', label: 'Projects Completed' },
+    { icon: Target, number: '99%', label: 'Success Rate' }
   ];
 
   const values = [
     {
-      title: 'Innovation First',
-      description: 'We stay ahead of trends and technology to deliver cutting-edge solutions.',
-      color: 'from-blue-500 to-cyan-500'
+      icon: Heart,
+      title: 'Passion-Driven',
+      description: 'We pour our heart into every project, ensuring exceptional results that exceed expectations.'
     },
     {
-      title: 'Client-Centric',
-      description: 'Your success is our success. We work closely with you every step of the way.',
-      color: 'from-green-500 to-emerald-500'
+      icon: Target,
+      title: 'Results-Focused',
+      description: 'Every strategy is designed with clear objectives and measurable outcomes in mind.'
     },
     {
-      title: 'Quality Driven',
-      description: 'We never compromise on quality and always strive for excellence.',
-      color: 'from-purple-500 to-pink-500'
-    },
-    {
-      title: 'Results Focused',
-      description: 'Every strategy and design decision is made with your business goals in mind.',
-      color: 'from-orange-500 to-red-500'
+      icon: Users,
+      title: 'Client-Centered',
+      description: 'Your success is our priority. We work closely with you throughout the entire journey.'
     }
   ];
 
@@ -56,14 +51,14 @@ const AboutSection = () => {
   };
 
   return (
-    <section id="about" className="py-20 bg-gradient-to-br from-white to-gray-50 relative overflow-hidden">
-      {/* Background Abstract Elements */}
+    <section id="about" className="py-20 gradient-modern relative overflow-hidden">
+      {/* Animated background particles */}
       <div className="absolute inset-0">
         <motion.div
-          className="absolute top-40 left-20 w-40 h-40 bg-gradient-to-br from-orange-100 to-peach-100 rounded-full opacity-40"
+          className="absolute top-40 right-20 w-40 h-40 rounded-full bg-gradient-to-br from-modern-cyan to-modern-blue opacity-20 animate-float"
           animate={{
             scale: [1, 1.3, 1],
-            rotate: [0, 180, 360],
+            rotate: [0, -360],
           }}
           transition={{
             duration: 25,
@@ -72,33 +67,40 @@ const AboutSection = () => {
           }}
         />
         <motion.div
-          className="absolute bottom-20 right-20 w-32 h-32 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full opacity-30"
+          className="absolute bottom-20 left-16 w-28 h-28 rounded-lg bg-gradient-to-br from-modern-pink to-modern-orange opacity-30 animate-float-reverse"
           animate={{
-            y: [0, -40, 0],
-            x: [0, -20, 0],
+            y: [0, -50, 0],
+            rotate: [0, 180, 0],
           }}
           transition={{
             duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut"
+            repeat: Infinity
           }}
+        />
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-5" 
+             style={{
+               backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--modern-purple)) 1px, transparent 0)`,
+               backgroundSize: '60px 60px'
+             }} 
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Header */}
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            About Our Agency
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-space font-black text-white mb-6 animate-text-glow">
+            About <span className="bg-gradient-to-r from-modern-cyan via-modern-purple to-modern-pink bg-clip-text text-transparent">NeoStudio</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're a passionate team of creatives, strategists, and developers dedicated to helping businesses thrive in the digital world.
+          <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+            We are a forward-thinking digital agency that transforms ideas into extraordinary digital experiences. 
+            Our passion for innovation drives us to create solutions that not only meet today's needs but anticipate tomorrow's possibilities.
           </p>
         </motion.div>
 
@@ -112,130 +114,109 @@ const AboutSection = () => {
         >
           {stats.map((stat, index) => (
             <motion.div
-              key={stat.label}
-              className="text-center group"
+              key={index}
+              className="text-center glass p-6 rounded-2xl card-3d"
               variants={itemVariants}
-              whileHover={{ y: -10 }}
+              whileHover={{ y: -10, scale: 1.05 }}
+              data-cursor-hover
             >
-              <div className="relative">
-                <motion.div
-                  className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-agency-orange to-agency-peach rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                >
-                  <stat.icon className="w-8 h-8 text-white" />
-                </motion.div>
-                <motion.div
-                  className="text-3xl md:text-4xl font-black text-gray-900 mb-2"
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  {stat.number}
-                </motion.div>
-                <p className="text-gray-600 font-medium">{stat.label}</p>
+              <motion.div
+                className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-modern-purple to-modern-cyan rounded-full flex items-center justify-center"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.5 }}
+              >
+                <stat.icon className="w-8 h-8 text-white" />
+              </motion.div>
+              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-modern-cyan to-modern-purple bg-clip-text text-transparent mb-2">
+                {stat.number}
               </div>
+              <div className="text-gray-300 font-medium">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
-          {/* Text Content */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-3xl font-bold text-gray-900 mb-6">
-              Building Digital Experiences That Matter
+            <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              Crafting Digital Excellence Since 2020
             </h3>
-            <div className="space-y-4 text-gray-600 leading-relaxed">
-              <p>
-                Founded in 2014, CreativeStudio has been at the forefront of digital innovation, helping businesses of all sizes establish and grow their online presence. Our team combines creative excellence with strategic thinking to deliver solutions that not only look great but drive real business results.
-              </p>
-              <p>
-                We believe that great design is more than just aesthetics—it's about creating meaningful connections between brands and their audiences. Every project we undertake is an opportunity to tell a unique story and solve complex challenges with elegant, user-focused solutions.
-              </p>
-              <p>
-                Our collaborative approach ensures that your vision is at the heart of everything we create. We don't just build websites and campaigns; we build partnerships that last.
-              </p>
+            <p className="text-gray-300 text-lg leading-relaxed mb-8">
+              Founded with a vision to revolutionize the digital landscape, NeoStudio has grown from a small team of passionate creators to a leading digital agency. We believe in the power of technology to transform businesses and create meaningful connections.
+            </p>
+            
+            <div className="space-y-4 mb-8">
+              {[
+                'Cutting-edge technology and innovative solutions',
+                'Dedicated team of industry experts',
+                'Proven track record of successful projects',
+                '24/7 support and ongoing partnership'
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  className="flex items-center space-x-3"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="w-6 h-6 bg-gradient-to-r from-modern-cyan to-modern-purple rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-gray-300">{item}</span>
+                </motion.div>
+              ))}
             </div>
+
+            <motion.button
+              className="bg-gradient-to-r from-modern-purple to-modern-cyan text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-modern-purple/30 card-3d"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              data-cursor-hover
+            >
+              Learn More About Us
+            </motion.button>
           </motion.div>
 
-          {/* Image */}
+          {/* Right Content - Values */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            className="space-y-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            className="relative"
           >
-            <div className="rounded-3xl overflow-hidden shadow-2xl">
-              <img
-                src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=600&h=400&fit=crop"
-                alt="Our team at work"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <motion.div
-              className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-agency-orange to-agency-peach rounded-full flex items-center justify-center shadow-lg"
-              animate={{
-                rotate: [0, 360],
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            >
-              <Award className="w-12 h-12 text-white" />
-            </motion.div>
+            {values.map((value, index) => (
+              <motion.div
+                key={index}
+                className="glass p-6 rounded-2xl card-3d"
+                variants={itemVariants}
+                whileHover={{ x: 10, scale: 1.02 }}
+                data-cursor-hover
+              >
+                <div className="flex items-start space-x-4">
+                  <motion.div
+                    className="w-12 h-12 bg-gradient-to-br from-modern-cyan to-modern-purple rounded-lg flex items-center justify-center flex-shrink-0"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <value.icon className="w-6 h-6 text-white" />
+                  </motion.div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-2">{value.title}</h4>
+                    <p className="text-gray-300 leading-relaxed">{value.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
-
-        {/* Values Section */}
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">
-            Our Core Values
-          </h3>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            These principles guide everything we do and ensure we deliver exceptional results for our clients.
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {values.map((value, index) => (
-            <motion.div
-              key={value.title}
-              className="text-center group"
-              variants={itemVariants}
-              whileHover={{ y: -10 }}
-            >
-              <div className={`w-16 h-16 mx-auto mb-6 bg-gradient-to-br ${value.color} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                <div className="w-8 h-8 bg-white rounded-lg"></div>
-              </div>
-              <h4 className="text-xl font-bold text-gray-900 mb-3">
-                {value.title}
-              </h4>
-              <p className="text-gray-600">
-                {value.description}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );
