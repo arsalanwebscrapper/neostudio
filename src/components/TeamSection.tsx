@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -10,7 +9,7 @@ const TeamSection = () => {
     {
       id: 1,
       name: "Sarah Johnson",
-      role: "Creative Director",
+      role: "Creative Director", 
       image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
       bio: "Leading creative vision with 10+ years in digital marketing"
     },
@@ -66,8 +65,7 @@ const TeamSection = () => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.6,
-        ease: "easeOut"
+        duration: 0.6
       }
     }
   };
