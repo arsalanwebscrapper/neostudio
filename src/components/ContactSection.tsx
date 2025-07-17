@@ -1,7 +1,8 @@
-
-import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, Clock, Globe } from 'lucide-react';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { Send, Mail, Phone, MapPin, MessageSquare } from 'lucide-react';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -10,46 +11,40 @@ const ContactSection = () => {
     subject: '',
     message: ''
   });
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const { error } = await supabase
+      .from('contact_messages')
+      .insert([formData]);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Your message has been sent successfully!",
+      });
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    }
+
+    setLoading(false);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission here
-  };
-
-  const contactInfo = [
-    {
-      icon: Mail,
-      label: 'Email Us',
-      value: 'hello@neostudio.com',
-      description: 'Send us an email anytime!'
-    },
-    {
-      icon: Phone,
-      label: 'Call Us',
-      value: '+1 (555) 123-4567',
-      description: 'Mon-Fri from 8am to 6pm'
-    },
-    {
-      icon: MapPin,
-      label: 'Visit Us',
-      value: '123 Digital Street, Tech City',
-      description: 'Come say hello at our office'
-    },
-    {
-      icon: Clock,
-      label: 'Working Hours',
-      value: 'Mon-Fri: 8AM-6PM',
-      description: 'Ready to help you grow'
-    }
-  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -73,31 +68,36 @@ const ContactSection = () => {
     }
   };
 
+  const contactInfo = [
+    { icon: Mail, label: 'Email', value: 'info@neostudio.com', link: 'mailto:info@neostudio.com' },
+    { icon: Phone, label: 'Phone', value: '+1 (555) 123-4567', link: 'tel:+15551234567' },
+    { icon: MapPin, label: 'Address', value: '123 Tech Street, Innovation City' }
+  ];
+
   return (
     <section id="contact" className="py-20 gradient-modern relative overflow-hidden">
       {/* Animated background particles */}
       <div className="absolute inset-0">
         <motion.div
-          className="absolute top-20 left-20 w-36 h-36 rounded-full bg-gradient-to-br from-modern-purple to-modern-pink opacity-20 animate-float"
+          className="absolute top-40 right-20 w-40 h-40 rounded-full bg-gradient-to-br from-modern-cyan to-modern-blue opacity-20 animate-float"
           animate={{
-            scale: [1, 1.4, 1],
-            rotate: [0, 360],
+            scale: [1, 1.3, 1],
+            rotate: [0, -360],
           }}
           transition={{
-            duration: 22,
+            duration: 25,
             repeat: Infinity,
             ease: "linear"
           }}
         />
         <motion.div
-          className="absolute bottom-32 right-16 w-28 h-28 rounded-lg bg-gradient-to-br from-modern-cyan to-modern-blue opacity-30 animate-float-reverse"
+          className="absolute bottom-20 left-16 w-28 h-28 rounded-lg bg-gradient-to-br from-modern-pink to-modern-orange opacity-30 animate-float-reverse"
           animate={{
-            y: [0, -35, 0],
-            x: [0, 25, 0],
-            rotate: [0, -180, 0],
+            y: [0, -50, 0],
+            rotate: [0, 180, 0],
           }}
           transition={{
-            duration: 16,
+            duration: 18,
             repeat: Infinity
           }}
         />
@@ -105,31 +105,120 @@ const ContactSection = () => {
         {/* Grid pattern */}
         <div className="absolute inset-0 opacity-5" 
              style={{
-               backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--modern-cyan)) 1px, transparent 0)`,
-               backgroundSize: '55px 55px'
+               backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--modern-purple)) 1px, transparent 0)`,
+               backgroundSize: '60px 60px'
              }} 
         />
       </div>
-
+      
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
-          className="text-center mb-20"
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-space font-black text-white mb-6 animate-text-glow">
-            Get In <span className="bg-gradient-to-r from-modern-cyan via-modern-purple to-modern-pink bg-clip-text text-transparent">Touch</span>
+            Let's <span className="bg-gradient-to-r from-modern-cyan via-modern-purple to-modern-pink bg-clip-text text-transparent">Connect</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Ready to start your next project? Let's create something amazing together. 
-            Reach out and let's discuss how we can bring your vision to life.
+            Ready to transform your digital presence? Let's discuss your project and bring your vision to life
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16">
-          {/* Contact Information */}
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          {/* Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="glass rounded-3xl p-8 card-3d">
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+                <MessageSquare className="w-6 h-6 mr-3 text-modern-cyan" />
+                Send us a message
+              </h3>
+              
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Your Name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full p-4 rounded-xl glass text-white placeholder-gray-300 border border-white/20 focus:border-modern-cyan focus:outline-none transition-all duration-300"
+                    />
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Your Email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full p-4 rounded-xl glass text-white placeholder-gray-300 border border-white/20 focus:border-modern-cyan focus:outline-none transition-all duration-300"
+                    />
+                  </motion.div>
+                </div>
+                
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <input
+                    type="text"
+                    name="subject"
+                    placeholder="Subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-4 rounded-xl glass text-white placeholder-gray-300 border border-white/20 focus:border-modern-cyan focus:outline-none transition-all duration-300"
+                  />
+                </motion.div>
+                
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <textarea
+                    name="message"
+                    placeholder="Your Message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    rows={6}
+                    className="w-full p-4 rounded-xl glass text-white placeholder-gray-300 border border-white/20 focus:border-modern-cyan focus:outline-none resize-none transition-all duration-300"
+                  />
+                </motion.div>
+                
+                <motion.button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-modern-purple to-modern-cyan text-white py-4 px-8 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-modern-purple/30 card-3d disabled:opacity-50 disabled:cursor-not-allowed"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  data-cursor-hover
+                >
+                  <Send className="w-5 h-5 inline-block mr-2" />
+                  {loading ? 'Sending...' : 'Send Message'}
+                </motion.button>
+              </form>
+            </div>
+          </motion.div>
+
+          {/* Contact Info */}
           <motion.div
             className="space-y-8"
             variants={containerVariants}
@@ -137,152 +226,35 @@ const ContactSection = () => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <motion.div variants={itemVariants}>
-              <h3 className="text-3xl font-bold text-white mb-8">Let's Start a Conversation</h3>
-              <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-                We're here to help you achieve your digital goals. Whether you need a complete brand overhaul 
-                or just want to enhance your online presence, our team is ready to make it happen.
-              </p>
-            </motion.div>
-
-            <motion.div className="space-y-6" variants={containerVariants}>
-              {contactInfo.map((info, index) => (
-                <motion.div
-                  key={index}
-                  className="glass p-6 rounded-2xl card-3d"
-                  variants={itemVariants}
-                  whileHover={{ x: 10, scale: 1.02 }}
-                  data-cursor-hover
-                >
-                  <div className="flex items-start space-x-4">
-                    <motion.div
-                      className="w-12 h-12 bg-gradient-to-br from-modern-cyan to-modern-purple rounded-lg flex items-center justify-center flex-shrink-0"
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <info.icon className="w-6 h-6 text-white" />
-                    </motion.div>
-                    <div>
-                      <h4 className="text-lg font-bold text-white mb-1">{info.label}</h4>
-                      <p className="text-modern-cyan font-semibold mb-1">{info.value}</p>
-                      <p className="text-gray-400 text-sm">{info.description}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* Contact Form */}
-          <motion.div
-            className="glass p-8 rounded-3xl card-3d"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <label htmlFor="name" className="block text-white font-medium mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-black/20 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-modern-cyan transition-colors"
-                    placeholder="Your Name"
-                    required
-                  />
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
-                  <label htmlFor="email" className="block text-white font-medium mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-black/20 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-modern-cyan transition-colors"
-                    placeholder="your@email.com"
-                    required
-                  />
-                </motion.div>
-              </div>
-
+            {contactInfo.map((item, index) => (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-              >
-                <label htmlFor="subject" className="block text-white font-medium mb-2">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-black/20 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-modern-cyan transition-colors"
-                  placeholder="How can we help?"
-                  required
-                />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                viewport={{ once: true }}
-              >
-                <label htmlFor="message" className="block text-white font-medium mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  rows={6}
-                  className="w-full px-4 py-3 bg-black/20 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-modern-cyan transition-colors resize-none"
-                  placeholder="Tell us about your project..."
-                  required
-                />
-              </motion.div>
-
-              <motion.button
-                type="submit"
-                className="w-full bg-gradient-to-r from-modern-purple to-modern-cyan text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-modern-purple/30 card-3d flex items-center justify-center space-x-2"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                viewport={{ once: true }}
+                key={index}
+                className="glass p-6 rounded-2xl card-3d"
+                variants={itemVariants}
+                whileHover={{ x: 10, scale: 1.02 }}
                 data-cursor-hover
               >
-                <span>Send Message</span>
-                <Send className="w-5 h-5" />
-              </motion.button>
-            </form>
+                <div className="flex items-start space-x-4">
+                  <motion.div
+                    className="w-12 h-12 bg-gradient-to-br from-modern-cyan to-modern-purple rounded-lg flex items-center justify-center flex-shrink-0"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <item.icon className="w-6 h-6 text-white" />
+                  </motion.div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-2">{item.label}</h4>
+                    {item.link ? (
+                      <a href={item.link} className="text-gray-300 leading-relaxed hover:text-modern-cyan transition-colors duration-300">
+                        {item.value}
+                      </a>
+                    ) : (
+                      <p className="text-gray-300 leading-relaxed">{item.value}</p>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </div>
