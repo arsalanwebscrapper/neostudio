@@ -1,8 +1,9 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { Menu, X, Sparkles, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -67,6 +68,23 @@ const Navigation = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-modern-cyan to-modern-purple group-hover:w-full transition-all duration-500"></span>
               </motion.a>
             ))}
+            
+            {/* Admin Link */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: navItems.length * 0.1 }}
+            >
+              <Link
+                to="/admin"
+                className="text-sm font-medium text-gray-300 hover:text-modern-purple transition-all duration-300 relative group flex items-center space-x-1"
+                data-cursor-hover
+              >
+                <Shield className="w-4 h-4" />
+                <span>ADMIN</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-modern-purple to-modern-pink group-hover:w-full transition-all duration-500"></span>
+              </Link>
+            </motion.div>
           </div>
 
           {/* CTA Button */}
@@ -113,6 +131,15 @@ const Navigation = () => {
                   {item.label}
                 </a>
               ))}
+              <Link
+                to="/admin"
+                className="text-sm font-medium text-gray-300 hover:text-modern-purple transition-colors duration-200 flex items-center space-x-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+                data-cursor-hover
+              >
+                <Shield className="w-4 h-4" />
+                <span>ADMIN</span>
+              </Link>
               <Button className="bg-gradient-to-r from-modern-purple to-modern-cyan text-white px-6 py-2 rounded-full font-medium w-fit" data-cursor-hover>
                 GET STARTED
               </Button>
