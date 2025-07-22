@@ -38,15 +38,21 @@
     --radius: 0.5rem;
 
     /* Modern color palette */
-    --modern-purple: 260 100% 65%;
-    --modern-purple-light: 260 100% 75%;
-    --modern-purple-dark: 260 100% 55%;
-    --modern-blue: 220 100% 60%;
-    --modern-cyan: 190 100% 50%;
-    --modern-pink: 320 100% 70%;
-    --modern-orange: 30 100% 60%;
+    --modern-purple: 269 100% 70%;
+    --modern-purple-light: 269 100% 80%;
+    --modern-purple-dark: 269 100% 60%;
+    --modern-blue: 217 91% 60%;
+    --modern-cyan: 189 94% 55%;
+    --modern-pink: 316 73% 69%;
+    --modern-orange: 31 81% 61%;
     --modern-gray: 220 8% 46%;
-    --modern-dark: 240 10% 8%;
+    --modern-dark: 222 84% 5%;
+    
+    /* Admin panel colors */
+    --admin-bg: 240 10% 4%;
+    --admin-card: 240 6% 10%;
+    --admin-border: 240 4% 16%;
+    --admin-accent: 217 91% 60%;
   }
 
   .dark {
@@ -111,6 +117,10 @@
 /* Gradient backgrounds */
 .gradient-modern {
   background: linear-gradient(135deg, hsl(var(--modern-dark)) 0%, hsl(240 15% 12%) 50%, hsl(var(--modern-dark)) 100%);
+}
+
+.gradient-admin {
+  background: linear-gradient(135deg, hsl(var(--admin-bg)) 0%, hsl(240 8% 8%) 25%, hsl(240 12% 6%) 75%, hsl(var(--admin-bg)) 100%);
 }
 
 .gradient-purple-blue {
@@ -261,4 +271,28 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to bottom, hsl(var(--modern-purple-light)), hsl(var(--modern-cyan)));
+}
+
+/* Modern glassmorphism styles */
+.glass-admin {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Professional shadows */
+.shadow-professional {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-professional-lg {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(0, 0, 0, 0.15);
 }
