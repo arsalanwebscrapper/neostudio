@@ -1,5 +1,7 @@
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   Palette, 
   TrendingUp, 
@@ -9,45 +11,71 @@ import {
   BarChart3 
 } from 'lucide-react';
 
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  color: string;
+}
+
 const ServicesSection = () => {
-  const services = [
-    {
-      icon: Palette,
-      title: "Brand Design",
-      description: "Creating stunning visual identities that capture your brand's essence and resonate with your audience.",
-      color: "from-modern-purple to-modern-pink"
-    },
-    {
-      icon: TrendingUp,
-      title: "Digital Strategy",
-      description: "Data-driven strategies that propel your business forward in the digital landscape.",
-      color: "from-modern-blue to-modern-cyan"
-    },
-    {
-      icon: Code,
-      title: "Web Development",
-      description: "Building fast, responsive, and user-friendly websites that convert visitors into customers.",
-      color: "from-modern-cyan to-modern-blue"
-    },
-    {
-      icon: Megaphone,
-      title: "Social Media Marketing",
-      description: "Engaging social media campaigns that build communities and drive brand awareness.",
-      color: "from-modern-orange to-modern-pink"
-    },
-    {
-      icon: Search,
-      title: "SEO Optimization",
-      description: "Improving your search engine rankings to increase visibility and organic traffic.",
-      color: "from-modern-purple to-modern-cyan"
-    },
-    {
-      icon: BarChart3,
-      title: "Analytics & Insights",
-      description: "Comprehensive analytics and reporting to measure success and optimize performance.",
-      color: "from-modern-cyan to-modern-purple"
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Icon mapping
+  const iconMap: { [key: string]: any } = {
+    Palette,
+    TrendingUp,
+    Code,
+    Megaphone,
+    Search,
+    BarChart3
+  };
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('services')
+        .select('*')
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+      setServices(data || []);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      // Fallback to default services if fetch fails
+      setServices([
+        {
+          id: '1',
+          title: "Brand Design",
+          description: "Creating stunning visual identities that capture your brand's essence and resonate with your audience.",
+          icon: "Palette",
+          color: "from-modern-purple to-modern-pink"
+        },
+        {
+          id: '2', 
+          title: "Digital Strategy",
+          description: "Data-driven strategies that propel your business forward in the digital landscape.",
+          icon: "TrendingUp",
+          color: "from-modern-blue to-modern-cyan"
+        },
+        {
+          id: '3',
+          title: "Web Development", 
+          description: "Building fast, responsive, and user-friendly websites that convert visitors into customers.",
+          icon: "Code",
+          color: "from-modern-cyan to-modern-blue"
+        }
+      ]);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -131,37 +159,41 @@ const ServicesSection = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {services.map((service, index) => (
-            <motion.div
-              key={service.title}
-              className="group"
-              variants={itemVariants}
-              whileHover={{ y: -10, scale: 1.02 }}
-              data-cursor-hover
-            >
-              <div className="glass rounded-3xl p-8 h-full card-3d transition-all duration-300 hover:shadow-2xl hover:shadow-modern-purple/20">
-                <motion.div
-                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
-                >
-                  <service.icon className="w-8 h-8 text-white" />
-                </motion.div>
-                
-                <h3 className="text-2xl font-bold text-white mb-4 group-hover:bg-gradient-to-r group-hover:from-modern-cyan group-hover:to-modern-purple group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                  {service.title}
-                </h3>
-                
-                <p className="text-gray-300 leading-relaxed">
-                  {service.description}
-                </p>
+          {services.map((service, index) => {
+            const IconComponent = iconMap[service.icon] || Code;
+            
+            return (
+              <motion.div
+                key={service.id}
+                className="group"
+                variants={itemVariants}
+                whileHover={{ y: -10, scale: 1.02 }}
+                data-cursor-hover
+              >
+                <div className="glass rounded-3xl p-8 h-full card-3d transition-all duration-300 hover:shadow-2xl hover:shadow-modern-purple/20">
+                  <motion.div
+                    className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    <IconComponent className="w-8 h-8 text-white" />
+                  </motion.div>
+                  
+                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:bg-gradient-to-r group-hover:from-modern-cyan group-hover:to-modern-purple group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                    {service.title}
+                  </h3>
+                  
+                  <p className="text-gray-300 leading-relaxed">
+                    {service.description}
+                  </p>
 
-                <motion.div
-                  className="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                >
-                  <div className="h-1 w-0 bg-gradient-to-r from-modern-cyan to-modern-purple group-hover:w-full transition-all duration-500 rounded-full"></div>
-                </motion.div>
-              </div>
-            </motion.div>
-          ))}
+                  <motion.div
+                    className="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    <div className="h-1 w-0 bg-gradient-to-r from-modern-cyan to-modern-purple group-hover:w-full transition-all duration-500 rounded-full"></div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         {/* Call to Action */}
